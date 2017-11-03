@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8">
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>Hello World!</title>
+  <script src="../Build/Cesium/Cesium.js"></script>
+  <style>
+      @import url(../Build/Cesium/Widgets/widgets.css);
+      html, body, #cesiumContainer {
+          width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+      }
+  </style>
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+  <!--<div id="gas-toolbar"  style="position: absolute;top: 100px ; left: 200px;z-index: 650">-->
+      <!--<label><input type="checkbox" value="Wireframe" data-bind="checked: wireframe" /><span>Wireframe</span></label><br />-->
+      <!--<label><input type="checkbox" value="Show tile coordinates" data-bind="checked: showTileCoordinates" /><span>Show Tile Coordinates</span></label><br />-->
+      <!--<label><input type="checkbox" value="Suspend LOD update" data-bind="checked: suspendLodUpdate" /><span>Suspend LOD Update</span></label><br />-->
+  <!--</div>-->
+  <!--<script src="../Source/Widgets/Viewer/viewerMyWidgetMixin.js"></script>-->
+  <script>
+      var viewer = new Cesium.Viewer('cesiumContainer',{
+//          skyBox : false,
+//          skyAtmosphere : false,
+          animation: false,  //是否显示动画控件
+          timeline: false,//是否显示时间线控件
+          fullscreenButton:false,
+          alpha:1
+
+      });
+//      var viewer = new Cesium.CesiumWidget('cesiumContainer', {scene3DOnly: true});
+      viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
+      viewer.scene.globe.baseColor = Cesium.Color.TRANSPARENT;
+          var terrainProvider = new Cesium.CesiumTerrainProvider({
+              url : 'https://assets.agi.com/stk-terrain/v1/tilesets/world/tiles',
+              requestWaterMask : true,
+              requestVertexNormals : true,
+              alpha:1
+          });
+          viewer.terrainProvider = terrainProvider;
+//       viewer.scene.globe.enableLighting = true;
+          viewer.extend(Cesium.viewerCesiumInspectorMixin);
+     viewer._cesiumWidget._creditContainer.style.display='none';
+//     var globeSurfaceTileProvider=new Cesium.GlobeSurfaceTileProvider({
+//         TerrainProvider:terrainProvider
+//         });
+//     var tile=new Scene.Globe.QuadtreePrimitive.GlobeSurfaceTileProvider.QuadtreeTile({
+//         x:0,
+//         y:0,
+//         lever:0,
+//         tilingScheme:new Cesium.WebMercatorTilingScheme()
+//     });
+//   var frameState=undefined;
+//     globeSurfaceTileProvider.computeTileVisibility (tile, frameState, occluders);
+
+
+//       var positions = [
+//              Cesium.Cartographic.fromDegrees(86.925145, 27.988257),
+//              Cesium.Cartographic.fromDegrees(87.0, 28.0)
+//                 ];
+//       var promise = Cesium.sampleTerrain(terrainProvider,5, positions);
+//       Cesium.when(promise, function(updatedPositions) {
+//           var s=positions[0].height;
+//           var s2=positions[1].height
+//       });
+//
+
+//      var s=terrainProvider.requestTileGeometry(120,32,1);
+
+
+//var width = 5;
+//var height = 5;
+//var statistics = Cesium.HeightmapTessellator.computeVertices({
+//    heightmap : [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0],
+//    width : width,
+//    height : height,
+//    skirtHeight : 0.0,
+//    nativeRectangle : {
+//        west : 10.0,
+//        east : 20.0,
+//        south : 30.0,
+//        north : 40.0
+//    }
+//});
+     var data = new Cesium.QuantizedMeshTerrainData({
+              minimumHeight : -100,
+       maximumHeight : 2101,
+          quantizedVertices : new Uint16Array([
+                                                                      0, 0, 32767, 32767,
+                                                                       0, 32767, 0, 32767,
+                                                                      16384, 0, 32767, 16384]),
+         indices : new Uint16Array([0, 3, 1,
+                                       0, 2, 3]),
+         boundingSphere : new Cesium.BoundingSphere(new Cesium.Cartesian3.fromDegrees(120.0, 30.0, 10.0), 10000),
+         orientedBoundingBox : new Cesium.OrientedBoundingBox(new Cesium.Cartesian3.fromDegrees(120.0, 30.0, 10.0), Cesium.Matrix3.fromRotationX(Cesium.Math.PI, new Cesium.Matrix3())),
+         horizonOcclusionPoint : new Cesium.Cartesian3.fromDegrees(120.0, 30.0, 20.0),
+         westIndices : [0, 1],
+          southIndices : [0, 1],
+         eastIndices : [2, 3],
+         northIndices : [1, 3],
+         westSkirtHeight : 1.0,
+           southSkirtHeight : 1.0,
+          eastSkirtHeight : 1.0,
+          northSkirtHeight : 1.0
+                                });
+       var tilingScheme=terrainProvider.tilingScheme;
+            var s1= data.createMesh(tilingScheme, 1,1,0,1);
+  </script>
+</body>
+</html>
