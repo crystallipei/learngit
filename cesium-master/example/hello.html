@@ -4,15 +4,28 @@
     <meta charset="UTF-8">
     <title>Hello World</title>
     <link href="../Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-    <script type="text/javascript" src="./js/require.min.js" data-main="./js/main" defer async></script>>
+    <script type="text/javascript" src="./js/require.min.js" data-main="./js/main" defer async></script>
+    <style>
+        html, body, #cesiumContainer {
+            width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+        }
+    </style>
 </head>
 <body>
 <div id="cesiumContainer"></div>
 <script>
     function onload(Cesium){
-        var viewer = new Cesium.Viewer("cesiumContainer");
-
+        var viewer = new Cesium.Viewer('cesiumContainer',{
+            animation: false,  //是否显示动画控件
+            timeline: false,//是否显示时间线控件
+            fullscreenButton:false,
+            alpha:1
+        });
+        viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
+        viewer.scene.globe.baseColor = Cesium.Color.TRANSPARENT;
+        viewer._cesiumWidget._creditContainer.style.display='none';
     }
+
 </script>
 </body>
 </html>
