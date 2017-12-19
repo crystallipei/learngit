@@ -1,0 +1,36 @@
+{
+    "tilejson": "2.1.0",
+    "name": "world",
+    "description": "STK World Terrain Premium Tileset, v1.3. 10m - 30m resolution CONUS, 30m resolution SRTM between 60N and 60S, 30m Europe.   Minimum global coverage of 1000m.",
+    "version": "1.31376.0",
+    "format": "quantized-mesh-1.0",
+    "attribution": "© Analytical Graphics Inc., © CGIAR-CSI, Produced using Copernicus data and information funded by the European Union - EU-DEM layers",
+    "scheme": "tms",
+    "extensions": [
+        "watermask",
+        "vertexnormals",
+        "octvertexnormals"
+    ],
+    "tiles": [
+        "{z}/{x}/{y}.terrain?v={version}"
+    ],
+    "minzoom": 0,
+    "maxzoom": 15,
+    "bounds": [
+        -180,
+        -90,
+        180,
+        90
+    ],
+    "projection": "EPSG:4326",
+    "available": [
+        [
+            {
+                "startX": 0,
+                "startY": 0,
+                "endX": 1,
+                "endY": 0
+            }
+        ]
+    ]
+}

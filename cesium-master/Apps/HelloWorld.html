@@ -60,16 +60,16 @@
 //     globeSurfaceTileProvider.computeTileVisibility (tile, frameState, occluders);
 
 
-//       var positions = [
-//              Cesium.Cartographic.fromDegrees(86.925145, 27.988257),
-//              Cesium.Cartographic.fromDegrees(87.0, 28.0)
-//                 ];
-//       var promise = Cesium.sampleTerrain(terrainProvider,5, positions);
-//       Cesium.when(promise, function(updatedPositions) {
-//           var s=positions[0].height;
-//           var s2=positions[1].height
-//       });
-//
+       var positions = [
+              Cesium.Cartographic.fromDegrees(86.925145, 27.988257),
+              Cesium.Cartographic.fromDegrees(87.0, 28.0)
+                 ];
+       var promise = Cesium.sampleTerrain(terrainProvider,5, positions);
+       Cesium.when(promise, function(updatedPositions) {
+           var s=positions[0].height;
+           var s2=positions[1].height
+       });
+
 
 //      var s=terrainProvider.requestTileGeometry(120,32,1);
 
