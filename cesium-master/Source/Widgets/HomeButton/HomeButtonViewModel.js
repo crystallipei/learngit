@@ -40,7 +40,7 @@ define([
          *
          * @type {String}
          */
-        this.tooltip = 'View Home';
+        this.tooltip = '首页';
 
         knockout.track(this, ['tooltip']);
     }

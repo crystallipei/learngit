@@ -108,7 +108,6 @@ define([
         knockout.cleanNode(this._element);
         this._container.removeChild(this._element);
         this.viewModel.destroy();
-
         return destroyObject(this);
     };
 

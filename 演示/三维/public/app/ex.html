@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>三维</title>
+    <link rel='stylesheet' href='../stylesheets/style.css'/>
+    <link rel='stylesheet' href='../stylesheets/bucket.css'/>
+    <link rel='stylesheet' href='../javascripts/Cesium/Widgets/widgets.css'/>
+    <link rel="stylesheet" href="libs/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="libs/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="libs/leaflet/leaflet.css">
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Hello World!</title>
+    <style>
+        html, body, #cesiumContainer {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        #allmap {
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            float: left;
+        }
+
+        #Te1 {
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        /*#draggable{*/
+        /*!*background-color:green;*!*/
+        /*font-size:9pt;*/
+        /*color:white;*/
+        /*width:360px;*/
+        /*height:324px;*/
+
+        /*}*/
+    </style>
+
+</head>
+<body>
+<div id="cesiumContainer" class="fullSize">
+    <div id="slider"></div>
+</div>
+<div id="loadingOverlay"><h1>Loading...</h1></div>
+<div id="draggable"
+     style="border:solid 2px white;position:absolute; bottom:0px;right:0px; width:300px; height:300px"></div>
+<div id="mapid"></div>
+
+<div class="container" style="position: absolute;top: 0px ; left: 200px;z-index: 650">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">网页</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="javascript:showDialog() " class="current" id="home">首页</a></li>
+                    <li class="navbar-collapse collapse">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">地图加载<span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="ul">
+                            <!--<li><a href="javascript:mapLoad2()" >堤防</a></li>-->
+
+                            <li role="separator" class="divider"></li>
+                            <li><a href="javascript:showD()" id="tuceng"> 添加图层...</a></li>
+                        </ul>
+                    </li>
+                    <li class="navbar-collapse collapse">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">地图缩放<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" id="zoomIn">放大</a></li>
+                            <li><a href="#" id="zoomOut">缩小</a></li>
+                            <li><a id="zoom3">拉框选择</a></li>
+                        </ul>
+                    </li>
+                    <li class="navbar-collapse collapse">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">查询<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" id="att">属性查询</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="navbar-collapse collapse">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">地图测量<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" id="dist">距离</a></li>
+                            <li><a href="#">面积</a></li>
+                        </ul>
+                    </li>
+                    <li class="navbar-collapse collapse">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">地图绘制<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" id="point">点</a></li>
+                            <li><a href="#" id="line"> 线</a></li>
+                            <li><a href="#">面</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Help</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+<div class="ui-dialog" id="dialogM" onselectstart='return false;'>
+    <div class="ui-dialog-title" id="dialogD" onselectstart="return false;">
+        图层加载
+        <a class="ui-dialog-closebutton"></a>
+        <button type="button" class="close" aria-label="Close" onclick="hideD()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="ui-dialog-content">
+        <div class="ui-dialog-l40 ui-dialog-pt15">
+            <input class="ui-dialog-input ui-dialog-input-username" type="input" id="text" name=text
+                   placeholder="图层地址"/>
+        </div>
+        <br>
+        <div class="ui-dialog-l40 ui-dialog-pt15" id="message">
+            <select class="ui-dialog-input ui-dialog-input-username" type="input" placeholder="图层名"/>
+            <!--&lt;!&ndash;<option>江宁区</option>&ndash;&gt;-->
+
+            </select>
+        </div>
+        <br>
+        <br>
+        <div>
+            <a class="ui-dialog-submit" href="#" id="btn">确定</a>
+        </div>
+    </div>
+    <div id="allmap"></div>
+    <div id="Te1">
+        <object classid="clsid:3a4f9192-65a8-11d5-85c1-0001023952c1" border="none" width="100%" height="100%"></object>
+    </div>
+    <object id="globe1" classid="CLSID:3a4f91b0-65a8-11d5-85c1-0001023952c1" style="visibility: hidden;
+        height: 0"></object>
+</div>
+
+
+</body>
+<script src="../javascripts/Cesium/Cesium.js"></script>
+<script src="../javascripts/jquery-3.2.1.js"></script>
+<script src="../javascripts/jquery.min.js"></script>
+<script src="../javascripts/Sandcastle-header.js"></script>
+
+
+<!--<script src="js/linkage.js"></script>-->
+<script src="libs/leaflet/leaflet-src.js"></script>
+<script src="libs/leaflet/leaflet-src.js"></script>
+<script type="text/javascript" src='js/leaflet.ChineseTmsProviders.js'></script>
+<script>
+    var viewer = new Cesium.Viewer('cesiumContainer');
+
+    var citizensBankPark = viewer.entities.add({
+        name : 'Citizens Bank Park',
+        position : Cesium.Cartesian3.fromDegrees(-75.166493, 39.9060534),
+        point : {
+            pixelSize : 5,
+            color : Cesium.Color.RED,
+            outlineColor : Cesium.Color.WHITE,
+            outlineWidth : 2
+        },
+        label : {
+            text : 'Citizens Bank Park',
+            font : '14pt monospace',
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            outlineWidth : 2,
+            verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+            pixelOffset : new Cesium.Cartesian2(0, -9)
+        }
+    });
+
+    viewer.zoomTo(viewer.entities);
+    //    uvs[i] = new Cartesian2(u, v);
+    //    heights[i] = height;
+    //    positions[i] = position;
+    //
+    //
+    //}
+</script>
+</html>

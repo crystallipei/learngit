@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>三维</title>
+    <link rel='stylesheet' href='../stylesheets/style.css' />
+    <link rel='stylesheet' href='../stylesheets/bucket.css' />
+    <link rel='stylesheet' href='../javascripts/Cesium/Widgets/widgets.css' />
+    <script src="../javascripts/jquery.min.js"></script>
+    <script src="../javascripts/jquery-3.2.1.js"></script>
+    <link rel="stylesheet" href="libs/bootstrap-3.3.7-dist/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="libs/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+    <script src="libs/bootstrap-3.3.7-dist/js/bootstrap.js"> </script>
+    <link rel="stylesheet" href="libs/leaflet/leaflet.css">
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>Hello World!</title>
+    <style>
+        html, body, #cesiumContainer {
+            width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
+        }
+        #slider {
+            position: absolute;
+            left: 50%;
+            top: 0px;
+            background-color: #D3D3D3;
+            width: 2px;
+            height: 100%;
+            z-index: 9999;
+        }
+        #slider:hover {
+            cursor: ew-resize;
+        }
+        #draggable{
+            /*background-color:green;*/
+            font-size:9pt;
+            color:white;
+            width:360px;
+            height:324px;
+        }
+    </style>
+</head>
+<body>
+<div id="cesiumContainer" >
+    <div id="slider"></div>
+</div>
+<div id="loadingOverlay"><h1>Loading...</h1></div>
+<div id="draggable" style="border:solid 2px white;position:absolute; bottom:0px;left:0px; width:300px; height:300px"></div>
+<div id="mapid" ></div>
+<div class="container" style="position: absolute;top: 0px ; left: 10px;z-index: 650">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#" id="control">Cesium实例</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a type="button" class="btn" data-toggle="button" aria-pressed="false"  id="home">首页</a></li>
+                    <li class="navbar-collapse collapse" >
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">地图标绘<span class="caret"></span></a>
+                        <ul class="dropdown-menu" id="ul">
+                            <!--<li role="separator" class="divider"></li>-->
+                            <li><a type="button" class="btn" data-toggle="button" aria-pressed="false" id="apoint">点</a></li>
+                            <li><a type="button" class="btn" data-toggle="button" aria-pressed="false" id="aline">线</a></li>
+                            <li><a type="button" class="btn" data-toggle="button" aria-pressed="false" id="apolygon">面</a></li>
+                        </ul>
+                    </li>
+                    <li class="navbar-collapse collapse">
+                        <a  href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">查询<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a type="button" class="btn" data-toggle="button" aria-pressed="false" id="att">属性查询</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="navbar-collapse collapse">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">地图测量<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a type="button" class="btn" data-toggle="button" aria-pressed="false" id="position" >位置</a></li>
+                            <li><a type="button" class="btn" data-toggle="button" aria-pressed="false" id="distance" >距离</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Help</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+</body>
+<script  src="../javascripts/Cesium/Cesium.js"></script>
+<script src="../javascripts/Sandcastle-header.js"></script>
+<script src="js/main.js"></script>
+<script src="js/myjs/namespace.js"></script>
+<script src="js/myjs/widget/attribute.js"></script>
+<script src="js/myjs/widget/home.js"></script>
+<script src="js/myjs/widget/lable.js"></script>
+<script src="js/myjs/widget/measure.js"></script>
+<script src="js/knockout-3.4.2.js"></script>
+<script src="libs/leaflet/leaflet-src.js"></script>
+<script type="text/javascript" src='js/leaflet.ChineseTmsProviders.js'></script>
+<script>
+    var citizensBankPark = viewer.entities.add({
+        name : 'Citizens Bank Park',
+        position : Cesium.Cartesian3.fromDegrees(-75.166493, 39.9060534),
+        point : {
+            pixelSize : 5,
+            color : Cesium.Color.RED,
+            outlineColor : Cesium.Color.WHITE,
+            outlineWidth : 2
+        },
+        label : {
+            text : 'Citizens Bank Park',
+            font : '14pt monospace',
+            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
+            outlineWidth : 2,
+            verticalOrigin : Cesium.VerticalOrigin.BOTTOM,
+            pixelOffset : new Cesium.Cartesian2(0, -9)
+        }
+    });
+
+    viewer.zoomTo(viewer.entities);
+</script>
+
+</html>

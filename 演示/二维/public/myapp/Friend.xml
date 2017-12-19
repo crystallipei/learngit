@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<friends>
+	<friend>
+		<name>
+			<firstName>Guo</firstName>
+			<lastName>Hu</lastName>
+		</name>
+		<address>
+			<province>Shanghai</province>
+			<city>PuDong</city>
+		</address>
+	</friend>
+	<friend>
+		<name>
+			<firstName>Lei</firstName>
+			<lastName>Hu</lastName>
+		
+	</name>
+		<address>
+			<province>hubei</province>
+			<city>xiantao</city>
+		</address>
+	</friend>
+	<friend>
+		<name>
+			<firstName>JunWen</firstName>
+			<lastName>Li</lastName>
+		</name>
+		<address>
+			<province>hubei</province>
+			<city>wuhan</city>
+		</address>
+	</friend>
+	<friend>
+		<name>
+			<firstName>Jinhao</firstName>
+			<lastName>Liu</lastName>
+		</name>
+		<address>
+			<province>ShanXi</province>
+			<city>Taiyuan</city>
+		</address>
+	</friend>
+	<friend>
+		<name>
+			<firstName>Cheng</firstName>
+			<lastName>Fang</lastName>
+		</name>
+		<address>
+			<province>GuangDong</province>
+			<city>GuangZhou</city>
+		</address>
+	</friend>
+</friends>

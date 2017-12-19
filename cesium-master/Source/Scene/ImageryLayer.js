@@ -703,7 +703,6 @@ define([
                     doRequest,
                     e);
         }
-
         function doRequest() {
             var request = new Request({
                 throttle : true,

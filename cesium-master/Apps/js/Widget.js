@@ -1,20 +1,7 @@
-Namespace.register("Pano.Widget");
-Pano.Widget.Compass = (function () {
-    var centrX, centrY;
-    var isUserInteracting = false;
-    function Compass(taskSetup, imgID) {
-        taskSetup.regdistRotateListener(function (angle) {
-            $(imgID).css('transform', 'rotate(' + angle + 'deg)');
-        });
-        var imgObj = $(imgID);
-        centrX = imgObj.width() / 2;
-        centrY = imgObj.height() / 2;
-        imgObj.bind('click touchend',function (event) {
-            taskSetup.rotateCamera(0);
-            event.stopPropagation();
-            event.preventDefault();
-        });
-    }
-    return Compass;
-})();
+Namespace.register('Qjjs.Widget');
+Qjjs.Widget.Home= (function (){
+            viewer.camera.flyTo({
+                destination : Cesium.Rectangle.fromDegrees(120,30,120,40)
+            });
+        })();
 

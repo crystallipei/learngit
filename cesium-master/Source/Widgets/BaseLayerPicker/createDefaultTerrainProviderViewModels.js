@@ -38,6 +38,45 @@ define([
             }
         }));
 
+
+        providerViewModels.push(new ProviderViewModel({
+            name : 'Cesium terrain build',
+            iconUrl : buildModuleUrl('Widgets/Images/TerrainProviders/CTB.png'),
+            tooltip : '地形数据',
+            creationFunction : function() {
+                return new CesiumTerrainProvider({
+                    url :'http://192.168.199.183/mytile',
+                    requestWaterMask : true,
+                    requestVertexNormals : true
+                });
+            }
+        }));
+
+        providerViewModels.push(new ProviderViewModel({
+            name : 'Cesium terrain build2',
+            iconUrl : buildModuleUrl('Widgets/Images/TerrainProviders/CTB.png'),
+            tooltip : '地形数据',
+            creationFunction : function() {
+                return new CesiumTerrainProvider({
+                    url :'http://192.168.199.183/ctb1',
+                    requestWaterMask : true,
+                    requestVertexNormals : true
+                });
+            }
+        }));
+        providerViewModels.push(new ProviderViewModel({
+            name : 'Python',
+            iconUrl : buildModuleUrl('Widgets/Images/TerrainProviders/Python.png'),
+            tooltip : '地形数据',
+            creationFunction : function() {
+                return new CesiumTerrainProvider({
+                    url :'http://192.168.199.183/python',
+                    requestWaterMask : true,
+                    requestVertexNormals : true
+                });
+            }
+        }));
+
         return providerViewModels;
     }
 

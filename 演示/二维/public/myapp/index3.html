@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="libs/leaflet/leaflet.css">
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script src="libs/leaflet/leaflet-src.js"></script>
+    <script type="text/javascript" src='js/leaflet.ChineseTmsProviders.js'></script>
+    <link rel="stylesheet" href="libs/bootstrap-3.3.7-dist/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="libs/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+    <script src="libs/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <script type="text/javascript" src="js/svg.js"></script>
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+
+    <script src="js/L.Control.ZoomBox.js"></script>
+    <link rel="stylesheet" href="css/L.Control.ZoomBox.css" />
+    <script src="js/proj4.js"></script>
+    <link rel="stylesheet" href="css/denglu.css">
+    <script src="js/tuceng.js"></script>
+    <script src="js/leaflet.wms.js"></script>
+    <script src="js/chaxun.js"></script>
+    <link rel="stylesheet" href="css/measure.css">
+    <script src="js/measure.js"></script>
+    <script src="js/zoom.js"></script>
+    <script src="js/icheck.js"></script>
+    <link href="flat/red.css" rel="stylesheet">
+    <link href="css/Control.MiniMap.min.css" rel="stylesheet">
+    <script src="js/Control.MiniMap.min.js"></script>
+</head>
+<body>
+<script src="js/jquery-3.2.1.js"></script>
+<script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+<script src="libs/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+<script src="js/ie10-viewport-bug-workaround.js"></script>
+<div id="mapid">
+</div>
+<style>
+    #mapid { height: 600px;width: 800px}
+</style>
+<script>
+    var layerOsm = new L.tileLayer.chinaProvider('TianDiTu.Normal.Map', {maxZoom: 18, minZoom: 1});
+    var mymap = new L.Map('mapid', {
+        measureControl: true,
+        doubleClickZoom: false
+        // crs: L.CRS.Simple
+    }).addLayer(layerOsm).setView([30.5, 120.5], 8);
+    L.Control.ZoomBox = L.Control.extend({
+        _active: false,
+        _map: null,
+        includes: L.Evented ? L.Evented.prototype : L.Mixin.Events,
+        options: {
+            position: 'bottomleft',
+            className: 'leaflet-zoom-box-icon',
+            modal: false,
+            title: "Zoom to specific area"
+        },
+        onAdd: function (map) {
+           this._map = map;
+           this._container = L.DomUtil.create('div', 'leaflet-zoom-box-control leaflet-bar');
+//            this._container.title = this.options.title;
+     var link = L.DomUtil.create('a', this.options.className, this._container);
+         link.href = "#";
+            // Bind to the map's boxZoom handler
+            var _origMouseDown = map.boxZoom._onMouseDown;
+            map.boxZoom._onMouseDown = function(e){
+                if (e.button === 2) return;  // prevent right-click from triggering zoom box
+                _origMouseDown.call(map.boxZoom, {
+                    clientX: e.clientX,
+                    clientY: e.clientY,
+                    which: 1,
+                    shiftKey: true
+                });
+            };
+            map.on('zoomend', function(){
+                if (map.getZoom() == map.getMaxZoom()){
+                    L.DomUtil.addClass(link, 'leaflet-disabled');
+                }
+                else {
+                    L.DomUtil.removeClass(link, 'leaflet-disabled');
+                }
+            }, this);
+            if (!this.options.modal) {
+                map.on('boxzoomend', this.deactivate, this);
+            }
+
+            L.DomEvent
+                .on(this._container, 'dblclick', L.DomEvent.stop)
+                .on(this._container, 'click', L.DomEvent.stop)
+                .on(this._container, 'mousedown', L.DomEvent.stopPropagation)
+                .on(this._container, 'click', function(){
+                    this._active = !this._active;
+                    if (this._active && map.getZoom() != map.getMaxZoom()){
+                        this.activate();
+                    }
+                    else {
+                        this.deactivate();
+                    }
+                }, this);
+            return this._container;
+        },
+        activate: function() {
+            L.DomUtil.addClass(this._container, 'active');
+            this._map.dragging.disable();
+            this._map.boxZoom.addHooks();
+            L.DomUtil.addClass(this._map.getContainer(), 'leaflet-zoom-box-crosshair');
+        },
+        deactivate: function() {
+            L.DomUtil.removeClass(this._container, 'active');
+            this._map.dragging.enable();
+            this._map.boxZoom.removeHooks();
+            L.DomUtil.removeClass(this._map.getContainer(), 'leaflet-zoom-box-crosshair');
+            this._active = false;
+        }
+    });
+    L.control.zoomBox = function (options) {
+        return new L.Control.ZoomBox(options);
+    };
+</script>
+</body>
+</html>

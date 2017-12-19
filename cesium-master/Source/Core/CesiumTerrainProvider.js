@@ -447,7 +447,6 @@ define([
             u += zigZagDecode(uBuffer[i]);
             v += zigZagDecode(vBuffer[i]);
             height += zigZagDecode(heightBuffer[i]);
-
             uBuffer[i] = u;
             vBuffer[i] = v;
             heightBuffer[i] = height;
@@ -566,71 +565,71 @@ define([
      * @exception {DeveloperError} This function must not be called before {@link CesiumTerrainProvider#ready}
      *            returns true.
      */
-    // CesiumTerrainProvider.prototype.requestTileGeometry = function(x, y, level, request) {
-    //     //>>includeStart('debug', pragmas.debug)
-    //     if (!this._ready) {
-    //         throw new DeveloperError('requestTileGeometry must not be called before the terrain provider is ready.');
-    //     }
-    //     //>>includeEnd('debug');
-    //
-    //     var layers = this._layers;
-    //     var layerToUse;
-    //     var layerCount = layers.length;
-    //
-    //     if (layerCount === 1) { // Optimized path for single layers
-    //         layerToUse = layers[0];
-    //     } else {
-    //         for (var i = 0; i < layerCount; ++i) {
-    //             var layer = layers[i];
-    //             if (!defined(layer.availability) || layer.availability.isTileAvailable(level, x, y)) {
-    //                 layerToUse = layer;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    //
-    //     if (!defined(layerToUse)) {
-    //         return when.reject(new RuntimeError('Terrain tile doesn\'t exist'));
-    //     }
-    //
-    //     var urlTemplates = layerToUse.tileUrlTemplates;
-    //     if (urlTemplates.length === 0) {
-    //         return undefined;
-    //     }
-    //
-    //     var yTiles = this._tilingScheme.getNumberOfYTilesAtLevel(level);
-    //
-    //     var tmsY = (yTiles - y - 1);
-    //
-    //     var url = urlTemplates[(x + tmsY + level) % urlTemplates.length].replace('{z}', level).replace('{x}', x).replace('{y}', tmsY);
-    //
-    //     var proxy = this._proxy;
-    //     if (defined(proxy)) {
-    //         url = proxy.getURL(url);
-    //     }
-    //
-    //     var extensionList = [];
-    //     if (this._requestVertexNormals && layerToUse.hasVertexNormals) {
-    //         extensionList.push(layerToUse.littleEndianExtensionSize ? 'octvertexnormals' : 'vertexnormals');
-    //     }
-    //     if (this._requestWaterMask && layerToUse.hasWaterMask) {
-    //         extensionList.push('watermask');
-    //     }
-    //
-    //     var promise = loadArrayBuffer(url, getRequestHeader(extensionList), request);
-    //
-    //     if (!defined(promise)) {
-    //         return undefined;
-    //     }
-    //
-    //     var that = this;
-    //     return when(promise, function(buffer) {
-    //         if (defined(that._heightmapStructure)) {
-    //             return createHeightmapTerrainData(that, buffer, level, x, y, tmsY);
-    //         }
-    //         return createQuantizedMeshTerrainData(that, buffer, level, x, y, tmsY, layerToUse.littleEndianExtensionSize);
-    //     });
-    // };
+    CesiumTerrainProvider.prototype.requestTileGeometry = function(x, y, level, request) {
+        //>>includeStart('debug', pragmas.debug)
+        if (!this._ready) {
+            throw new DeveloperError('requestTileGeometry must not be called before the terrain provider is ready.');
+        }
+        //>>includeEnd('debug');
+
+        var layers = this._layers;
+        var layerToUse;
+        var layerCount = layers.length;
+
+        if (layerCount === 1) { // Optimized path for single layers
+            layerToUse = layers[0];
+        } else {
+            for (var i = 0; i < layerCount; ++i) {
+                var layer = layers[i];
+                if (!defined(layer.availability) || layer.availability.isTileAvailable(level, x, y)) {
+                    layerToUse = layer;
+                    break;
+                }
+            }
+        }
+
+        if (!defined(layerToUse)) {
+            return when.reject(new RuntimeError('Terrain tile doesn\'t exist'));
+        }
+
+        var urlTemplates = layerToUse.tileUrlTemplates;
+        if (urlTemplates.length === 0) {
+            return undefined;
+        }
+
+        var yTiles = this._tilingScheme.getNumberOfYTilesAtLevel(level);
+
+        var tmsY = (yTiles - y - 1);
+
+        var url = urlTemplates[(x + tmsY + level) % urlTemplates.length].replace('{z}', level).replace('{x}', x).replace('{y}', tmsY);
+
+        var proxy = this._proxy;
+        if (defined(proxy)) {
+            url = proxy.getURL(url);
+        }
+
+        var extensionList = [];
+        if (this._requestVertexNormals && layerToUse.hasVertexNormals) {
+            extensionList.push(layerToUse.littleEndianExtensionSize ? 'octvertexnormals' : 'vertexnormals');
+        }
+        if (this._requestWaterMask && layerToUse.hasWaterMask) {
+            extensionList.push('watermask');
+        }
+
+        var promise = loadArrayBuffer(url, getRequestHeader(extensionList), request);
+
+        if (!defined(promise)) {
+            return undefined;
+        }
+
+        var that = this;
+        return when(promise, function(buffer) {
+            if (defined(that._heightmapStructure)) {
+                return createHeightmapTerrainData(that, buffer, level, x, y, tmsY);
+            }
+            return createQuantizedMeshTerrainData(that, buffer, level, x, y, tmsY, layerToUse.littleEndianExtensionSize);
+        });
+    };
 
     defineProperties(CesiumTerrainProvider.prototype, {
         /**

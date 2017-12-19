@@ -80,7 +80,6 @@ define([
 
     TileTerrain.prototype.publishToTile = function(tile) {
         var surfaceTile = tile.data;
-
         var mesh = this.mesh;
         Cartesian3.clone(mesh.center, surfaceTile.center);
         surfaceTile.minimumHeight = mesh.minimumHeight;

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="libs/leaflet/leaflet.css">
+    <script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+    <script src="libs/leaflet/leaflet-src.js"></script>
+    <script type="text/javascript" src='js/leaflet.ChineseTmsProviders.js'></script>
+    <link rel="stylesheet" href="libs/bootstrap-3.3.7-dist/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="libs/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+    <script src="libs/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/navbar.css">
+    <script type="text/javascript" src="js/svg.js"></script>
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/L.Control.ZoomBox.js"></script>
+    <link rel="stylesheet" href="css/L.Control.ZoomBox.css" />
+    <script src="js/proj4.js"></script>
+    <link rel="stylesheet" href="css/denglu.css">
+    <script src="js/tuceng.js"></script>
+    <script src="js/leaflet.wms.js"></script>
+    <script src="js/chaxun.js"></script>
+    <link rel="stylesheet" href="css/measure.css">
+    <script src="js/measure.js"></script>
+    <script src="js/zoom.js"></script>
+    <script src="js/icheck.js"></script>
+    <link href="flat/red.css" rel="stylesheet">
+    <link href="css/Control.MiniMap.min.css" rel="stylesheet">
+    <script src="js/Control.MiniMap.min.js"></script>
+    <script src="js/attribute.js"></script>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+        #mapid {
+            position:relative;
+            cursor: default;
+            height: 100vh;
+            width: 100vw;
+        }
+    </style>
+</head>
+<body>
+<div id="mapid" >
+</div>
+
+<div class="container" style="position: absolute;top: 0px ; left: 10px;z-index: 650">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">网页</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="javascript:showDialog() "  class="current" id="home">首页</a></li>
+                        <li class="navbar-collapse collapse" >
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">地图加载<span class="caret"></span></a>
+                            <ul class="dropdown-menu" id="ul">
+                                <!--<li><a href="javascript:mapLoad2()" >堤防</a></li>-->
+
+                                <li role="separator" class="divider"></li>
+                                <li><a href="javascript:showD()" id="tuceng"> 添加图层...</a></li>
+                            </ul>
+                        </li>
+                        <li class="navbar-collapse collapse">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">地图缩放<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" id="zoomIn">放大</a></li>
+                                <li><a href="#" id="zoomOut">缩小</a></li>
+                                <li><a id="zoom3">拉框选择</a></li>
+                            </ul>
+                        </li>
+                        <li class="navbar-collapse collapse">
+                            <a  href="#"  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">查询<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" id="att">属性查询</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="navbar-collapse collapse">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">地图测量<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" id="dist" >距离</a></li>
+                                <li><a href="#">面积</a></li>
+                            </ul>
+                        </li>
+                        <li class="navbar-collapse collapse">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">地图绘制<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#" id="point">点</a></li>
+                                <li><a href="#" id="line"> 线</a></li>
+                                <li><a href="#" >面</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">Help</a></li>
+                    </ul>
+                </div>
+            </div>
+</nav>
+</div>
+
+<div class="ui-dialog" id="dialogMove" onselectstart='return false;'>
+    <div class="ui-dialog-title" id="dialogDrag"  onselectstart="return false;" >
+        登录通行证
+    </div>
+    <div class="ui-dialog-content">
+        <div class="ui-dialog-l40 ui-dialog-pt15">
+            <input class="ui-dialog-input ui-dialog-input-username" type="input" placeholder="手机/邮箱/用户名" />
+        </div>
+        <div class="ui-dialog-l40 ui-dialog-pt15">
+            <input class="ui-dialog-input ui-dialog-input-password" type="input" placeholder="密码" />
+        </div>
+        <p>
+        <div class="ui-dialog-l40">
+            <a href="#">忘记密码</a>
+        </div>
+        <div>
+            <a class="ui-dialog-submit" href="#" >登录</a>
+        </div>
+        <div class="ui-dialog-l40">
+            <a href="#">立即注册</a>
+        </div>
+    </div>
+</div>
+
+<div class="ui-dialog" id="dialogM" onselectstart='return false;'>
+    <div class="ui-dialog-title" id="dialogD"  onselectstart="return false;" >
+        图层加载
+        <a class="ui-dialog-closebutton"></a>
+        <button type="button" class="close" aria-label="Close" onclick="hideD()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="ui-dialog-content">
+        <div class="ui-dialog-l40 ui-dialog-pt15">
+            <input class="ui-dialog-input ui-dialog-input-username" type="input" id="text" name=text placeholder="图层地址" />
+        </div>
+        <br>
+        <div class="ui-dialog-l40 ui-dialog-pt15" id="message">
+            <select class="ui-dialog-input ui-dialog-input-username" type="input" placeholder="图层名" />
+            <!--&lt;!&ndash;<option>江宁区</option>&ndash;&gt;-->
+            <!--&lt;!&ndash;<option>4</option>&ndash;&gt;-->
+            <!--&lt;!&ndash;<option>5</option>&ndash;&gt;-->
+            </select>
+        </div>
+        <br>
+        <br>
+        <div>
+            <a class="ui-dialog-submit"  href="#" id="btn" >确定</a>
+        </div>
+    </div>
+</div>
+<script>
+    var layerObj = {};
+    function drawPolygon() {
+        var points = [],
+            points_length = 0,
+            polyline,
+            polygon;
+        // 单击
+        var clickFlag,
+            clickTimes = 1,
+            isDrag = false;
+        mymap.on('mousedown', function(e) {
+            map.off('mousemove');
+            if(clickFlag) clearTimeout(clickFlag);
+            clickFlag = setTimeout(function() {
+                if(clickTimes==1 && !isDrag) {
+                    points.push([e.latlng.lat, e.latlng.lng]);
+                    points_length = points.length;
+                    // 移动
+                    mymap.on('mousemove', function(e) {
+                        // 清除
+                        if(polyline) map.removeLayer(polyline);
+                        if(polygon) map.removeLayer(polygon);
+                        // polyline
+                        points[points_length] = [e.latlng.lat, e.latlng.lng];
+                        polyline = new L.Polyline(points);
+                        map.addLayer(polyline);
+                        // polygon
+                        polygon = new L.Polygon(points);
+                        mymap.addLayer(polygon);
+                    });
+                }
+            }, 300);
+        });
+        // 双击
+        mymap.on('dblclick', function() {
+            if(points.length) {
+                clickTimes = 2;
+                // polyline
+                polyline = new L.Polyline(points);
+                map.addLayer(polyline);
+                // polygon
+                polygon = new L.Polygon(points);
+                map.addLayer(polygon);
+                // 移除事件
+                map.off('mousemove');
+                setTimeout(function() {
+                    clickTimes = 1;
+                    // 保存layer(方便后面删除)
+                    var layerName = prompt('请入名称');
+                    if(layerName) {
+                        layerObj[layerName] = [polyline, polygon];
+                        console.log(layerObj);
+                    }
+                    points = [];
+                }, 300);
+            }
+        });
+        // 键盘事件
+        $(document).keyup(function(e) {
+            if(e.keyCode == 27) {// esc键
+                if(points.length) {
+                    map.off('mousemove');
+                    clickTimes = 1;
+                    map.removeLayer(polyline);
+                    map.removeLayer(polygon);
+                    points = [];
+                }
+            }
+        });
+        // 拖动
+        mymap.on('movestart', function() {
+            isDrag = true;
+        });
+        mymap.on('moveend', function() {
+            isDrag = false;
+        });
+    }
+    drawPolygon();
+</script>
+</body>
+</html>

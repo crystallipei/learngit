@@ -57,7 +57,6 @@ define([
         var south = rectangle.south;
         var east = rectangle.east;
         var north = rectangle.north;
-
         var ellipsoid = Ellipsoid.clone(parameters.ellipsoid);
 
         var exaggeration = parameters.exaggeration;
@@ -210,14 +209,14 @@ define([
         return {
             vertices : vertexBuffer.buffer,
             indices : indexBuffer.buffer,
-            vertexStride : vertexStride,
+            // vertexStride : vertexStride,
             center : center,
             minimumHeight : minimumHeight,
             maximumHeight : maximumHeight,
-            boundingSphere : boundingSphere,
-            orientedBoundingBox : orientedBoundingBox,
+            // boundingSphere : boundingSphere,
+            // orientedBoundingBox : orientedBoundingBox,
             encoding : encoding,
-            skirtIndex : parameters.indices.length
+            // skirtIndex : parameters.indices.length
         };
     }
 

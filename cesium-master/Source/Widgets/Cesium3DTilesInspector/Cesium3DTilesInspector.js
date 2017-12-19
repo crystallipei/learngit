@@ -1,21 +1,21 @@
 define([
-        '../../Core/Check',
-        '../../Core/defaultValue',
-        '../../Core/defined',
-        '../../Core/defineProperties',
-        '../../Core/destroyObject',
-        '../../ThirdParty/knockout',
-        '../getElement',
-        './Cesium3DTilesInspectorViewModel'
-    ], function(
-        Check,
-        defaultValue,
-        defined,
-        defineProperties,
-        destroyObject,
-        knockout,
-        getElement,
-        Cesium3DTilesInspectorViewModel) {
+    '../../Core/Check',
+    '../../Core/defaultValue',
+    '../../Core/defined',
+    '../../Core/defineProperties',
+    '../../Core/destroyObject',
+    '../../ThirdParty/knockout',
+    '../getElement',
+    './Cesium3DTilesInspectorViewModel'
+], function(
+    Check,
+    defaultValue,
+    defined,
+    defineProperties,
+    destroyObject,
+    knockout,
+    getElement,
+    Cesium3DTilesInspectorViewModel) {
     'use strict';
 
     /**

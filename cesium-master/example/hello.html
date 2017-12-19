@@ -4,7 +4,14 @@
     <meta charset="UTF-8">
     <title>Hello World</title>
     <link href="../Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+    <link rel="stylesheet" href="./js/libs/bootstrap-3.3.7-dist/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="./js/libs/bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="./js/libs/leaflet/leaflet.css">
     <script type="text/javascript" src="./js/require.min.js" data-main="./js/main" defer async></script>
+    <script src="./js/jquery-3.2.1.js"></script>
+    <script type="text/javascript" src="./js/namespace.js"></script>
+    <script type="text/javascript" src="./js/common.js"></script>
+    <script type="text/javascript" src="./js/Widget.js"></script>
     <style>
         html, body, #cesiumContainer {
             width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden;
@@ -13,20 +20,135 @@
 </head>
 <body>
 <div id="cesiumContainer"></div>
+<div class="container" style="position: absolute;top: 0px ; left: 10px;z-index: 650">
+            <button class="btn btn-default" type="submit"  id="dis">距离</button>
+</div>
 <script>
+
+
+
     function onload(Cesium){
         'use strict';
         var viewer = new Cesium.Viewer('cesiumContainer',{
+//            imageryProvider:new Cesium.UrlTemplateImageryProvider({
+//                url:'http://192.168.199.190/tile/u.jpg'
+//            }),
+//            baseLayerPicker:false,
             animation: false,  //是否显示动画控件
             timeline: false,//是否显示时间线控件
-            fullscreenButton:false,
+            fullscreenButton:true,
             alpha:1
         });
-        viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
-        viewer.scene.globe.baseColor = Cesium.Color.TRANSPARENT;
-        viewer._cesiumWidget._creditContainer.style.display='none';
+// //        viewer.extend(Cesium.viewerCesiumInspectorMixin);
+// //        var layers = viewer.scene.imageryLayers;
+// //        var blackMarble = layers.addImageryProvider(new Cesium.UrlTemplateImageryProvider({
+// //            url : 'http://192.168.199.190/tile/u.jpg'
+// //
+// //        }));
+//         viewer.extend(Cesium.viewerCesiumInspectorMixin);
+//         viewer.extend(Cesium.viewerPerformanceWatchdogMixin);
+//         var imageryLayers = viewer.imageryLayers;
+//         var mercatorLayer = new Cesium.TileCoordinatesImageryProvider({
+//             tilingScheme: new Cesium.WebMercatorTilingScheme()
+//         });
+//         var wgsLayer = new Cesium.TileCoordinatesImageryProvider();
+//         var mGridLayer = new Cesium.GridImageryProvider({
+//             tilingScheme: new Cesium.WebMercatorTilingScheme()
+//         });
+//         var wGridLayer = new Cesium.GridImageryProvider();
+//
+// //        imageryLayers.addImageryProvider(mercatorLayer);
+// //        imageryLayers.addImageryProvider(mGridLayer,1);
+//         viewer.scene.backgroundColor = Cesium.Color.TRANSPARENT;
+//         viewer.scene.globe.baseColor = Cesium.Color.TRANSPARENT;
+//         viewer._cesiumWidget._creditContainer.style.display='none';
+//         // var tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+//         //     url: 'http://192.168.199.183/3dtiles/23',
+//         //     debugShowStatistics: true,
+//         //     baseScreenSpaceError: 1024,
+//         //     skipScreenSpaceErrorFactor: 16,
+//         //     skipLevels: 1,
+//         //     immediatelyLoadDesiredLevelOfDetail: false,
+//         //     loadSiblings: false,
+//         //     cullWithChildrenBounds: true,
+//         //     debugColorizeTiles:true
+//         //
+//         // }));
+//         var tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+//             url: 'http://192.168.199.183/3dtiles/Batched15',
+//             debugShowStatistics: true,
+//             baseScreenSpaceError: 1024,
+//             skipScreenSpaceErrorFactor: 16,
+//             skipLevels: 1,
+//             immediatelyLoadDesiredLevelOfDetail: false,
+//             loadSiblings: false,
+//             cullWithChildrenBounds: true,
+//             debugColorizeTiles:true
+//
+//         }));
+//         tileset.readyPromise.then(function(tileset) {
+//             // Set the camera to view the newly added tileset
+//             viewer.camera.viewBoundingSphere(tileset.boundingSphere, new Cesium.HeadingPitchRange(0, -0.5, 0));
+//             viewer.camera.lookAtTransform(Cesium.Matrix4.IDENTITY);
+//         });
+//         var scene = viewer.scene;
+//         var modelMatrix = Cesium.Transforms.eastNorthUpToFixedFrame(
+//             Cesium.Cartesian3.fromDegrees(-75.62898254394531, 40.02804946899414, 0.0));
+//         var model = scene.primitives.add(Cesium.Model.fromGltf({
+//             url : '../../Apps/SampleData/models/CesiumGround/Cesium_Ground.gltf',
+//             modelMatrix : modelMatrix,
+//             scale : 200.0
+//         }));
+//         Cesium.when(model.readyPromise).then(function(model) {
+//             model.activeAnimations.addAll({
+//                 //永久重复
+//                 loop : Cesium.ModelAnimationLoop.REPEAT
+//             });
+//         });
+//       function home(){
+//             viewer.camera.flyTo({
+//                 destination : Cesium.Rectangle.fromDegrees(120,30,120,40)
+//             });
+//         }
+//   $('#dis').click(home);
+        var entity = viewer.entities.add({
+            point : {
+                pixelSize : 5,
+                color : Cesium.Color.RED,
+                outlineColor : Cesium.Color.WHITE,
+                surface:true,
+                height : 10,
+                outlineWidth : 2
+            },
+            label : {
+                text : 'Citizens Bank Park',
+                font : '14pt monospace',
+                style : Cesium.LabelStyle.FILL_AND_OUTLINE,
+                outlineWidth : 3,
+                verticalOrigin : Cesium.VerticalOrigin.BOTTOM, //垂直方向以底部来计算标签的位置
+                pixelOffset : new Cesium.Cartesian2( 0, -9 ) ,  //偏移量
+                surface:true,
+                height : 10,
+                show : false
+            }
+        });
+ function getPosition(e){
+     var cartesian=viewer.camera.pickEllipsoid(e.position,viewer.scene.globe.ellipsoid);
+     var cartographic=Cesium.Cartographic.fromCartesian(cartesian);
+     var lng=Cesium.Math.toDegrees(cartographic.longitude);//经度值
+     var lat=Cesium.Math.toDegrees(cartographic.latitude);//纬度值
+     entity.position = cartesian;
+     entity.label.show = true;
+     entity.label.text = '(经度：' + lng + ', 纬度：' +lat + ',高度' + cartographic.height + ')' ;
+ }
+        var handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
+        handler.setInputAction(getPosition, Cesium.ScreenSpaceEventType.LEFT_CLICK);
+        handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+// //         var d = Cesium.Cartesian3.distance(
+// //             new Cesium.Cartesian3(pick1.x, pick1.y, pick1.z),
+// //             new Cesium.Cartesian3(pick3.x, pick3.y, pick3.z)
+// //         );
     }
-
 </script>
 </body>
 </html>
